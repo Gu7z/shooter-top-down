@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour
     private GameObject player;
     private GameObject spawn;
     private Rigidbody2D rb;
-    public float shootForce; 
+    public float moveSpeed; 
 
     void Start()
     {
@@ -34,13 +34,17 @@ public class Enemy : MonoBehaviour
 
     private void moveToPlayer()
     {
-        // Get the mouse position in world coordinates
-        Vector2 playerPosition = player.transform.position;
+    // Get the player's position
+    Vector2 playerPosition = player.transform.position;
 
-        // Calculate the direction from the shooter to the mouse position
-        Vector2 direction = playerPosition - (Vector2)transform.position;
-        direction.Normalize();
+    // Calculate the direction from the shooter to the player's position
+    Vector2 direction = playerPosition - (Vector2)transform.position;
+    direction.Normalize();
 
-        rb.AddForce(direction * shootForce, ForceMode2D.Impulse);
+    // Calculate the velocity based on the direction and speed
+    Vector2 velocity = direction * moveSpeed;
+
+    // Apply the velocity to the Rigidbody2D
+    rb.velocity = velocity;
     }
 }
