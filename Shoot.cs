@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Shoot : MonoBehaviour
 {
- public GameObject bulletPrefab;   // The prefab of the bullet to be shot
-    public float shootForce = 10f;    // The force at which the bullet is shot
+    public GameObject bulletPrefab;   // The prefab of the bullet to be shot
+    public float shootForce;    // The force at which the bullet is shot
     public KeyCode shootKey = KeyCode.Mouse0; // The key to shoot the bullet
 
     private void Update()
