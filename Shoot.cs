@@ -25,8 +25,10 @@ public class Shoot : MonoBehaviour
         Vector2 direction = mousePosition - (Vector2)transform.position;
         direction.Normalize();
 
+        Vector2 spawnPosition = (Vector2)transform.position + direction * 1.25f;
+
         // Instantiate the bullet prefab
-        GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+        GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
 
         // Apply force to the bullet in the specified direction
         Rigidbody2D bulletRigidbody = bullet.GetComponent<Rigidbody2D>();

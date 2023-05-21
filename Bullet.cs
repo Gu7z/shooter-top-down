@@ -20,10 +20,9 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Check if the collision is with a specific tag or GameObject
+        Destroy(gameObject);
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            Destroy(gameObject);
             Enemy enemyScript = collision.gameObject.GetComponent<Enemy>();
             enemyScript.takeDamage(damage);
         }
