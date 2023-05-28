@@ -23,6 +23,7 @@ public class Bullet : MonoBehaviour
         Destroy(gameObject);
         if (collision.gameObject.CompareTag("Enemy"))
         {
+            Debug.Log("bullet impact!");
             Enemy enemyScript = collision.gameObject.GetComponent<Enemy>();
             enemyScript.takeDamage(damage);
         }
