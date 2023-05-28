@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     private Rigidbody2D rb;
     public float moveSpeed;
     private float initializationTime;
+    SpriteRenderer sprite;
 
     void Start()
     {
@@ -18,8 +19,7 @@ public class Enemy : MonoBehaviour
         spawn = GameObject.Find("Spawn");
         player = GameObject.Find("Player");
         rb = GetComponent<Rigidbody2D>();
-        Debug.Log("player found");
-        Debug.Log(player);
+        sprite = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -41,7 +41,7 @@ public class Enemy : MonoBehaviour
 
     private void moveToPlayer(float aliveTime)
     {
-        float currentSpeed = moveSpeed + (aliveTime / moveSpeed);
+        float currentSpeed = moveSpeed + (aliveTime);
         // Get the player's position
         Vector2 playerPosition = player.transform.position;
 
@@ -54,5 +54,18 @@ public class Enemy : MonoBehaviour
 
         // Apply the velocity to the Rigidbody2D
         rb.velocity = velocity;
+
+        float enemyRedColor = map01(currentSpeed, moveSpeed, moveSpeed*5);
+
+        Debug.Log("----");
+        Debug.Log(currentSpeed);
+        Debug.Log(enemyRedColor);
+        Debug.Log("----");
+
+        sprite.color = new Color(enemyRedColor*10, 0, 0, 1);
+    }
+    public static float map01(float value, float min, float max)
+    {
+        return (value - min) * 1f / (max - min);
     }
 }

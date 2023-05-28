@@ -7,12 +7,14 @@ public class Maze : MonoBehaviour
     public GameObject wallPrefab;    // Prefab for the wall sprite
     public GameObject floorPrefab;   // Prefab for the floor sprite
     private Vector3 playerPosition;
+    private GameObject MazeParent;
 
     private GameObject[,] mapTiles;  // 2D array to store the map tiles
 
     private void Start()
     {
         playerPosition = GameObject.Find("Player").transform.position;
+        MazeParent = GameObject.Find("Maze");
         GenerateMap();
     }
 
@@ -46,6 +48,7 @@ public class Maze : MonoBehaviour
                     // Instantiate a wall prefab for border cells
                     Vector3 position = startingPosition + new Vector3(x, y, 0f);
                     mapTiles[x, y] = Instantiate(wallPrefab, position, Quaternion.identity);
+                    mapTiles[x, y].transform.parent = MazeParent.transform;
                 }
             }
         }
@@ -84,6 +87,7 @@ private void GenerateInnerWalls(Vector3 startingPosition)
                         // Instantiate a wall prefab for inner cells with the calculated position
                         Vector3 position = startingPosition + new Vector3(bx, by, 0f);
                         mapTiles[bx, by] = Instantiate(wallPrefab, position, Quaternion.identity);
+                        mapTiles[bx, by].transform.parent = MazeParent.transform;
                     }
                 }
             }
@@ -103,6 +107,7 @@ private void GenerateInnerWalls(Vector3 startingPosition)
                     // Instantiate a floor prefab for empty cells
                     Vector3 position = startingPosition + new Vector3(x, y, 0f);
                     mapTiles[x, y] = Instantiate(floorPrefab, position, Quaternion.identity);
+                    mapTiles[x, y].transform.parent = MazeParent.transform;
                 }
             }
         }
