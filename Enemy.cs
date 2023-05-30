@@ -3,32 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour {
-  public int health;
+  [SerializeField] float health, maxHealth = 50f;
   private GameObject player;
   private GameObject spawn;
   private Rigidbody2D rb;
+  private float currentSpeed;
   public float moveSpeed;
   private float initializationTime;
   SpriteRenderer sprite;
+  [SerializeField] FloatingBar healthBar;
 
-  void Start() {
-
-    initializationTime = Time.timeSinceLevelLoad;
+  void Awake() {
+    healthBar = GetComponentInChildren<FloatingBar>();
+    rb = GetComponent<Rigidbody2D>();
     spawn = GameObject.Find("Spawn");
     player = GameObject.Find("Player");
-    rb = GetComponent<Rigidbody2D>();
     sprite = GetComponent<SpriteRenderer>();
+  }
+
+  void Start() {
+    initializationTime = Time.timeSinceLevelLoad;
   }
 
   // Update is called once per frame
   void Update() {
     float timeSinceInitialization = Time.timeSinceLevelLoad - initializationTime;
-    moveToPlayer(timeSinceInitialization);
+    updateSpeed(timeSinceInitialization);
+    moveToPlayer();
   }
 
   public void takeDamage(int amount) {
     health -= amount;
-
+    healthBar.UpdateBar(health, maxHealth);
     if (health <= 0) {
       Debug.Log("Enemy dead");
       Destroy(gameObject);
@@ -36,8 +42,14 @@ public class Enemy : MonoBehaviour {
     }
   }
 
-  private void moveToPlayer(float aliveTime) {
-    float currentSpeed = moveSpeed + (aliveTime);
+  private void updateSpeed(float aliveTime) {
+    currentSpeed = Mathf.Max(moveSpeed + (aliveTime), 18);
+    float enemyRedColor = map01(currentSpeed, 0, moveSpeed * 2);
+
+    sprite.color = new Color(enemyRedColor * 10, 0, 0, 1);
+  }
+
+  private void moveToPlayer() {
     // Get the player's position
     Vector2 playerPosition = player.transform.position;
 
@@ -50,12 +62,8 @@ public class Enemy : MonoBehaviour {
 
     // Apply the velocity to the Rigidbody2D
     rb.velocity = velocity;
-
-    float enemyRedColor = map01(currentSpeed, moveSpeed, moveSpeed * 5);
-
-    sprite.color = new Color(enemyRedColor * 10, 0, 0, 1);
   }
-  public static float map01(float value, float min, float max) {
+  static float map01(float value, float min, float max) {
     return (value - min) * 1f / (max - min);
   }
 }
