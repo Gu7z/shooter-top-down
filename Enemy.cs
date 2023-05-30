@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour {
+  [SerializeField] private Camera cam;
   [SerializeField] float health, maxHealth = 50f;
   private GameObject player;
   private GameObject spawn;
@@ -14,6 +15,7 @@ public class Enemy : MonoBehaviour {
   [SerializeField] FloatingBar healthBar;
 
   void Awake() {
+    cam = GameObject.Find("Main Camera").GetComponent<Camera>();
     healthBar = GetComponentInChildren<FloatingBar>();
     rb = GetComponent<Rigidbody2D>();
     spawn = GameObject.Find("Spawn");
@@ -30,6 +32,7 @@ public class Enemy : MonoBehaviour {
     float timeSinceInitialization = Time.timeSinceLevelLoad - initializationTime;
     updateSpeed(timeSinceInitialization);
     moveToPlayer();
+    transform.rotation = cam.transform.rotation;
   }
 
   public void takeDamage(int amount) {
